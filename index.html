@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Reading Passage Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding: 20px; }
+        .form-container { margin-bottom: 30px; }
+        .output-container { background-color: #f8f9fa; padding: 20px; border-radius: 5px; }
+        .copy-btn { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">📚 English Reading Passage Generator Prompt</h1>
+        <p>Customize your reading passage prompt using the options below:</p>
+        
+        <div class="row form-container">
+            <div class="col-md-6">
+                <!-- Theme selection -->
+                <div class="mb-3">
+                    <label for="theme" class="form-label">Select a theme:</label>
+                    <select id="theme" class="form-select">
+                        <option>Science & Technology</option>
+                        <option>History & Culture</option>
+                        <option>Business & Economics</option>
+                        <option>Arts & Literature</option>
+                        <option>Nature & Environment</option>
+                        <option>Travel & Adventure</option>
+                    </select>
+                </div>
+                
+                <!-- Proficiency level -->
+                <div class="mb-3">
+                    <label for="level" class="form-label">Select proficiency level:</label>
+                    <select id="level" class="form-select">
+                        <option>Beginner (A1)</option>
+                        <option>Elementary (A2)</option>
+                        <option>Intermediate (B1)</option>
+                        <option>Upper Intermediate (B2)</option>
+                        <option>Advanced (C1)</option>
+                        <option>Proficient (C2)</option>
+                    </select>
+                </div>
+                
+                <!-- Topic/Title -->
+                <div class="mb-3">
+                    <label for="topic" class="form-label">Topic or Title (optional):</label>
+                    <input type="text" id="topic" class="form-control">
+                </div>
+                
+                <!-- Description -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description (optional):</label>
+                    <textarea id="description" class="form-control" rows="4"></textarea>
+                </div>
+                
+                <!-- Length -->
+                <div class="mb-3">
+                    <label for="length" class="form-label">Select passage length:</label>
+                    <select id="length" class="form-select">
+                        <option>100 words</option>
+                        <option>150 words</option>
+                        <option>200 words</option>
+                        <option>250 words</option>
+                        <option>300 words</option>
+                        <option>350 words</option>
+                        <option>400 words</option>
+                        <option>450 words</option>
+                        <option>500 words</option>
+                        <option value="custom">Custom length</option>
+                    </select>
+                </div>
+                
+                <div id="customLengthContainer" class="mb-3 d-none">
+                    <label for="customLength" class="form-label">Custom word count:</label>
+                    <input type="number" id="customLength" class="form-control" min="50" max="1000" value="250" step="50">
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <!-- Tone -->
+                <div class="mb-3">
+                    <label for="tone" class="form-label">Select tone:</label>
+                    <select id="tone" class="form-select">
+                        <option>Formal</option>
+                        <option>Casual</option>
+                        <option>Academic</option>
+                        <option>Conversational</option>
+                    </select>
+                </div>
+                
+                <!-- NEW: Writer Style -->
+                <div class="mb-3">
+                    <label for="writerStyle" class="form-label">Select writer style (optional):</label>
+                    <select id="writerStyle" class="form-select">
+                        <option value="">Not specified</option>
+                        <optgroup label="A1 Level">
+                            <option>A1 / Dr. Seuss / Simple, rhythmic sentences with humor</option>
+                            <option>A1 / Margaret Hillert / Very simple words with repetitive structure</option>
+                            <option>A1 / P.D. Eastman / Humorous, simple sentences with animal characters</option>
+                            <option>A1 / Norman Bridwell / Warm, simple stories with familiar themes</option>
+                            <option>A1 / Eric Carle / Repetitive sentences with nature themes</option>
+                        </optgroup>
+                        <optgroup label="A2 Level">
+                            <option>A2 / Roald Dahl (simplified) / Imaginative stories with witty dialogue</option>
+                            <option>A2 / E.B. White / Warm, concise sentences about nature and animals</option>
+                            <option>A2 / Arnold Lobel / Short, simple sentences about friendship</option>
+                            <option>A2 / Cynthia Rylant / Warm stories with everyday adventures</option>
+                            <option>A2 / Syd Hoff / Cheerful animal stories with simple vocabulary</option>
+                            <option>A2 / Mo Willems / Simple dialogue with humorous characters</option>
+                        </optgroup>
+                        <optgroup label="B1 Level">
+                            <option>B1 / Beverly Cleary / Everyday stories with humor and simple dialogue</option>
+                            <option>B1 / Louis Sachar / Engaging plots with concise, lively writing</option>
+                            <option>B1 / Kate DiCamillo / Warm, emotional stories with descriptive sentences</option>
+                            <option>B1 / R.L. Stine / Suspenseful stories with simple, fast-paced writing</option>
+                            <option>B1-B2 / Roald Dahl / Quirky, humorous tone with descriptive passages</option>
+                            <option>B1-B2 / C.S. Lewis / Adventure and fantasy with vivid descriptions</option>
+                        </optgroup>
+                        <optgroup label="B2 Level">
+                            <option>B2 / Ernest Hemingway / Short, powerful sentences with implied meaning</option>
+                            <option>B2 / Neil Gaiman / Mysterious atmosphere with rich imagination</option>
+                            <option>B2 / J.K. Rowling / Progressively complex sentences in a magical world</option>
+                            <option>B2 / Lois Lowry / Thought-provoking themes with emotional depth</option>
+                        </optgroup>
+                    </select>
+                </div>
+                
+                <!-- Words per sentence -->
+                <div class="mb-3">
+                    <label for="wordsPerSentence" class="form-label">Words per sentence (optional):</label>
+                    <select id="wordsPerSentence" class="form-select">
+                        <option value="">Not specified</option>
+                        <option>3 to 5</option>
+                        <option>3 to 6</option>
+                        <option>3 to 7</option>
+                        <option>4 to 7</option>
+                        <option>4 to 8</option>
+                        <option>free</option>
+                    </select>
+                </div>
+                
+                <!-- Vocabulary count -->
+                <div class="mb-3">
+                    <label for="vocabCount" class="form-label">Number of vocabulary items: <span id="vocabValue">8</span></label>
+                    <input type="range" class="form-range" id="vocabCount" min="5" max="15" value="8">
+                </div>
+                
+                <!-- True/False questions -->
+                <div class="mb-3">
+                    <label for="tfCount" class="form-label">Number of True/False questions: <span id="tfValue">5</span></label>
+                    <input type="range" class="form-range" id="tfCount" min="3" max="7" value="5">
+                </div>
+                
+                <!-- Multiple Choice questions -->
+                <div class="mb-3">
+                    <label for="mcCount" class="form-label">Number of Multiple Choice questions: <span id="mcValue">5</span></label>
+                    <input type="range" class="form-range" id="mcCount" min="3" max="7" value="5">
+                </div>
+            </div>
+        </div>
+        
+        <button id="generateBtn" class="btn btn-primary mb-4">Generate Prompt</button>
+        
+        <div id="outputContainer" class="output-container d-none">
+            <h3>Generated Prompt:</h3>
+            <div id="promptDisplay" class="mb-3"></div>
+            
+            <textarea id="promptText" class="form-control mb-3" rows="12" readonly></textarea>
+            
+            <div class="row">
+                <div class="col-auto">
+                    <button id="copyBtn" class="btn btn-secondary copy-btn">Copy</button>
+                </div>
+                <div class="col">
+                    <div id="copyStatus" class="d-none alert alert-success mt-2">
+                        ✓ Copied to clipboard!
+                    </div>
+                </div>
+            </div>
+            
+            <button id="downloadBtn" class="btn btn-outline-primary mt-3">
+                📥 Download as Text File
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Update slider values
+        document.getElementById('vocabCount').addEventListener('input', function() {
+            document.getElementById('vocabValue').textContent = this.value;
+        });
+        
+        document.getElementById('tfCount').addEventListener('input', function() {
+            document.getElementById('tfValue').textContent = this.value;
+        });
+        
+        document.getElementById('mcCount').addEventListener('input', function() {
+            document.getElementById('mcValue').textContent = this.value;
+        });
+        
+        // Show/hide custom length input
+        document.getElementById('length').addEventListener('change', function() {
+            if (this.value === 'custom') {
+                document.getElementById('customLengthContainer').classList.remove('d-none');
+            } else {
+                document.getElementById('customLengthContainer').classList.add('d-none');
+            }
+        });
+        
+        // Generate prompt
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            const theme = document.getElementById('theme').value;
+            const level = document.getElementById('level').value;
+            const topic = document.getElementById('topic').value;
+            const description = document.getElementById('description').value;
+            let length = document.getElementById('length').value;
+            if (length === 'custom') {
+                length = document.getElementById('customLength').value + ' words';
+            }
+            const tone = document.getElementById('tone').value;
+            const writerStyle = document.getElementById('writerStyle').value;
+            const wordsPerSentence = document.getElementById('wordsPerSentence').value;
+            const vocabCount = document.getElementById('vocabCount').value;
+            const tfCount = document.getElementById('tfCount').value;
+            const mcCount = document.getElementById('mcCount').value;
+            
+            // Build the prompt
+            let prompt = `## English Reading Passage Generator Prompt
+
+**Theme:** ${theme}
+**Proficiency Level:** ${level}`;
+
+            if (topic) {
+                prompt += `\n**Topic/Title:** ${topic}`;
+            }
+            
+            if (description) {
+                prompt += `\n**Description:** ${description}`;
+            }
+            
+            prompt += `\n**Length:** ${length}
+**Tone:** ${tone}`;
+
+            if (writerStyle) {
+                prompt += `\n**Writer Style:** ${writerStyle}`;
+            }
+
+            if (wordsPerSentence) {
+                prompt += `\n**Words per sentence:** ${wordsPerSentence}`;
+            }
+
+            prompt += `\n
+Please generate an engaging English reading passage based on the specifications above. The passage should:
+
+1. Be appropriate for ${level} English language learners
+2. Have approximately ${length}
+3. Use a ${tone.toLowerCase()} tone throughout
+4. Focus on the theme of ${theme}`;
+
+            let nextPoint = 5;
+
+            if (writerStyle) {
+                prompt += `\n${nextPoint}. Emulate the writing style of ${writerStyle.split('/')[1].trim()} (${writerStyle.split('/')[2].trim()})`;
+                nextPoint++;
+            }
+
+            if (wordsPerSentence && wordsPerSentence !== 'free') {
+                prompt += `\n${nextPoint}. Use sentences with ${wordsPerSentence} words per sentence`;
+                nextPoint++;
+            }
+
+            if (topic) {
+                prompt += `\n${nextPoint}. Address the specific topic/title: "${topic}"`;
+                nextPoint++;
+            }
+            
+            if (description) {
+                prompt += `\n${nextPoint}. Incorporate the following description/context: "${description}"`;
+            }
+            
+            prompt += `\n
+Additionally, please include:
+
+- A vocabulary list of ${vocabCount} key words from the passage in this format:
+  "word: (part of speech) meaning in English, meaning in Korean"
+  Example:
+  rudimentary: (adj) basic or elementary in development, 기초적인
+  electromagnetic radiation: (n) energy that travels in waves, including visible light, radio waves, and X-rays, 전자기 방사
+
+- ${tfCount} True/False questions based on the passage content (with answers provided at the end of all quizzes)
+- ${mcCount} Multiple Choice questions with 4 options each (with answers provided at the end of all quizzes)
+
+Format the response with clear section headings for the passage, vocabulary list, and each quiz type.`;
+            
+            // Display the prompt
+            document.getElementById('promptDisplay').innerHTML = prompt.replace(/\n/g, '<br>');
+            document.getElementById('promptText').value = prompt;
+            document.getElementById('outputContainer').classList.remove('d-none');
+        });
+        
+        // Copy functionality
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const promptText = document.getElementById('promptText');
+            promptText.select();
+            document.execCommand('copy');
+            
+            const copyStatus = document.getElementById('copyStatus');
+            copyStatus.classList.remove('d-none');
+            setTimeout(() => {
+                copyStatus.classList.add('d-none');
+            }, 2000);
+        });
+        
+        // Download functionality
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            const prompt = document.getElementById('promptText').value;
+            const blob = new Blob([prompt], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'reading_passage_prompt.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
